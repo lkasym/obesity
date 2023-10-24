@@ -118,7 +118,8 @@ health_info = {
 st.title("Obesity Prediction")
 
 # Collect user input
-col1, col2 = st.beta_columns(2)
+col1, col2 = st.columns(2)
+
 with col1:
     age = st.number_input("Age", min_value=10, max_value=100)
     height = st.number_input("Height (in meters)", min_value=1.0, max_value=2.5)
