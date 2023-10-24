@@ -22,28 +22,39 @@ height = st.number_input("Height (in meters)", min_value=1.0, max_value=2.5)
 weight = st.number_input("Weight (in kgs)", min_value=30, max_value=200)
 bmi = weight / (height ** 2)
 
-# Convert the categorical inputs to the format used in the training dataset
+# Encoding and processing the inputs
 input_data = {
     'Age': age,
-    'Height': height,
-    'Weight': weight,
-    'family_history_with_overweight': 1 if st.selectbox("Family history with overweight?", ["Yes", "No"]) == "Yes" else 0,
-    'FAVC': 1 if st.selectbox("Frequent consumption of high caloric food?", ["Yes", "No"]) == "Yes" else 0,
-    'FCVC': ['Never', 'Sometimes', 'Always'].index(st.selectbox("Frequency of vegetable consumption", ["Never", "Sometimes", "Always"])) + 1,
-    'NCP': float(['1 meal', '2 meals', '3 meals', '4 meals'].index(st.selectbox("Number of main meals a day", ["1 meal", "2 meals", "3 meals", "4 meals"])) + 1),
-    'CAEC': ['No', 'Sometimes', 'Frequently', 'Always'].index(st.selectbox("Consumption of food between meals", ["No", "Sometimes", "Frequently", "Always"])),
-    'SMOKE': 1 if st.selectbox("Do you smoke?", ["Yes", "No"]) == "Yes" else 0,
-    'CH2O': ['Less than a liter', 'Between 1 and 2 liters', 'More than 2 liters'].index(st.selectbox("Daily water consumption", ["Less than a liter", "Between 1 and 2 liters", "More than 2 liters"])) + 1,
-    'SCC': 1 if st.selectbox("Do you monitor calorie consumption?", ["Yes", "No"]) == "Yes" else 0,
-    'FAF': ['None', '1-2 days a week', '3-4 days a week', '4-5 days a week'].index(st.selectbox("Frequency of physical activity", ["None", "1-2 days a week", "3-4 days a week", "4-5 days a week"])),
-    'TUE': ['0-2 hours', '3-5 hours', 'More than 5 hours'].index(st.selectbox("Time using technology devices daily", ["0-2 hours", "3-5 hours", "More than 5 hours"])),
-    'CALC': ['No', 'Sometimes', 'Frequently', 'Always'].index(st.selectbox("Frequency of alcohol consumption", ["No", "Sometimes", "Frequently", "Always"]))
+    'BMI': bmi,
+    'family_history_with_overweight': st.selectbox("Family history with overweight?", ["Yes", "No"]),
+    'FAVC': st.selectbox("Frequent consumption of high caloric food?", ["Yes", "No"]),
+    'FCVC': st.selectbox("Frequency of vegetable consumption", ["Never", "Sometimes", "Always"]),
+    'NCP': st.selectbox("Number of main meals a day", ["1 meal", "2 meals", "3 meals", "4 meals"]),
+    'CAEC': st.selectbox("Consumption of food between meals", ["No", "Sometimes", "Frequently", "Always"]),
+    'SMOKE': st.selectbox("Do you smoke?", ["Yes", "No"]),
+    'CH2O': st.selectbox("Daily water consumption", ["Less than a liter", "Between 1 and 2 liters", "More than 2 liters"]),
+    'SCC': st.selectbox("Do you monitor calorie consumption?", ["Yes", "No"]),
+    'FAF': st.selectbox("Frequency of physical activity", ["None", "1-2 days a week", "3-4 days a week", "4-5 days a week"]),
+    'TUE': st.selectbox("Time using technology devices daily", ["0-2 hours", "3-5 hours", "More than 5 hours"]),
+    'CALC': st.selectbox("Frequency of alcohol consumption", ["No", "Sometimes", "Frequently", "Always"])
 }
 
-input_df = pd.DataFrame([input_data])
-
-# Ensure that the input data columns match the training data columns
-input_df = input_df[dataset.drop('NObeyesdad', axis=1).columns]
+# Convert the inputs into the format used in the training dataset
+input_df = pd.DataFrame([{
+    'Age': (age - dataset['Age'].mean()) / dataset['Age'].std(),
+    'BMI': (bmi - dataset['BMI'].mean()) / dataset['BMI'].std(),
+    'family_history_with_overweight': 1 if input_data['family_history_with_overweight'] == "Yes" else 0,
+    'FAVC': 1 if input_data['FAVC'] == "Yes" else 0,
+    'FCVC': ["Never", "Sometimes", "Always"].index(input_data['FCVC']),
+    'NCP': float(["1 meal", "2 meals", "3 meals", "4 meals"].index(input_data['NCP']) + 1),
+    'CAEC': ["No", "Sometimes", "Frequently", "Always"].index(input_data['CAEC']),
+    'SMOKE': 1 if input_data['SMOKE'] == "Yes" else 0,
+    'CH2O': ["Less than a liter", "Between 1 and 2 liters", "More than 2 liters"].index(input_data['CH2O']),
+    'SCC': 1 if input_data['SCC'] == "Yes" else 0,
+    'FAF': ["None", "1-2 days a week", "3-4 days a week", "4-5 days a week"].index(input_data['FAF']),
+    'TUE': ["0-2 hours", "3-5 hours", "More than 5 hours"].index(input_data['TUE']),
+    'CALC': ["No", "Sometimes", "Frequently", "Always"].index(input_data['CALC'])
+}])
 
 # Dropdown to select model for prediction
 model_option = st.selectbox(
