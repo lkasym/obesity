@@ -30,7 +30,7 @@ weight = st.number_input("Weight (in kgs)", min_value=30, max_value=200)
 age = (age - age_mean) / age_std
 height = (height - height_mean) / height_std
 weight = (weight - weight_mean) / weight_std
-
+bmi = weight / (height ** 2)
 family_history_with_overweight = 1 if st.selectbox("Family history with overweight?", ["Yes", "No"]) == "Yes" else 0
 FAVC = 1 if st.selectbox("Frequent consumption of high caloric food?", ["Yes", "No"]) == "Yes" else 0
 SMOKE = 1 if st.selectbox("Do you smoke?", ["Yes", "No"]) == "Yes" else 0
