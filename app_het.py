@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import pickle
+from joblib import load
 
 # Load pre-trained models
 model_files = {
@@ -16,7 +17,10 @@ model_files = {
 models = {}
 for model_name, model_file in model_files.items():
     with open(model_file, 'rb') as f:
-        models[model_name] = pickle.load(f)
+        models[model_name] = load(f'{model_name}.pkl')
+        
+        
+
 
 # Streamlit interface
 st.title("Obesity Prediction")
