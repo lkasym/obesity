@@ -114,8 +114,7 @@ health_info = {
     }
 }
 
-# Streamlit interface
-st.title("Obesity Prediction")
+
 
 # Collect user input
 col1, col2 = st.columns(2)
