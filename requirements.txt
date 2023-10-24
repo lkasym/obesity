@@ -1,0 +1,3 @@
+streamlit==1.2.0  # You can update this to the version you're using
+pandas==1.3.3  # Update to the version you're using
+scikit-learn==0.24.2  # Update to the version you're using
