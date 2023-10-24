@@ -16,16 +16,27 @@ dataset = pd.read_csv(dataset_path)
 # Streamlit App
 st.title("Obesity Prediction")
 
-# Collecting user inputs
-age = st.number_input("Age", min_value=10, max_value=100)
-height = st.number_input("Height (in meters)", min_value=1.0, max_value=2.5)
-weight = st.number_input("Weight (in kgs)", min_value=30, max_value=200)
-bmi = weight / (height ** 2)
+def encode_input(input_data):
+    return {
+        'Age': (input_data['Age'] - dataset['Age'].mean()) / dataset['Age'].std(),
+        'BMI': (input_data['BMI'] - dataset['BMI'].mean()) / dataset['BMI'].std(),
+        'family_history_with_overweight': 1 if input_data['family_history_with_overweight'] == "Yes" else 0,
+        'FAVC': 1 if input_data['FAVC'] == "Yes" else 0,
+        'FCVC': ["Never", "Sometimes", "Always"].index(input_data['FCVC']),
+        'NCP': float(["1 meal", "2 meals", "3 meals", "4 meals"].index(input_data['NCP']) + 1),
+        'CAEC': ["No", "Sometimes", "Frequently", "Always"].index(input_data['CAEC']),
+        'SMOKE': 1 if input_data['SMOKE'] == "Yes" else 0,
+        'CH2O': ["Less than a liter", "Between 1 and 2 liters", "More than 2 liters"].index(input_data['CH2O']),
+        'SCC': 1 if input_data['SCC'] == "Yes" else 0,
+        'FAF': ["None", "1-2 days a week", "3-4 days a week", "4-5 days a week"].index(input_data['FAF']),
+        'TUE': ["0-2 hours", "3-5 hours", "More than 5 hours"].index(input_data['TUE']),
+        'CALC': ["No", "Sometimes", "Frequently", "Always"].index(input_data['CALC'])
+    }
 
-# Encoding and processing the inputs
+# Collecting user inputs
 input_data = {
-    'Age': age,
-    'BMI': bmi,
+    'Age': st.number_input("Age", min_value=10, max_value=100),
+    'BMI': st.number_input("Weight (in kgs)", min_value=30, max_value=200) / (st.number_input("Height (in meters)", min_value=1.0, max_value=2.5) ** 2),
     'family_history_with_overweight': st.selectbox("Family history with overweight?", ["Yes", "No"]),
     'FAVC': st.selectbox("Frequent consumption of high caloric food?", ["Yes", "No"]),
     'FCVC': st.selectbox("Frequency of vegetable consumption", ["Never", "Sometimes", "Always"]),
@@ -39,22 +50,9 @@ input_data = {
     'CALC': st.selectbox("Frequency of alcohol consumption", ["No", "Sometimes", "Frequently", "Always"])
 }
 
-# Convert the inputs into the format used in the training dataset
-input_df = pd.DataFrame([{
-    'Age': (age - dataset['Age'].mean()) / dataset['Age'].std(),
-    'BMI': (bmi - dataset['BMI'].mean()) / dataset['BMI'].std(),
-    'family_history_with_overweight': 1 if input_data['family_history_with_overweight'] == "Yes" else 0,
-    'FAVC': 1 if input_data['FAVC'] == "Yes" else 0,
-    'FCVC': ["Never", "Sometimes", "Always"].index(input_data['FCVC']),
-    'NCP': float(["1 meal", "2 meals", "3 meals", "4 meals"].index(input_data['NCP']) + 1),
-    'CAEC': ["No", "Sometimes", "Frequently", "Always"].index(input_data['CAEC']),
-    'SMOKE': 1 if input_data['SMOKE'] == "Yes" else 0,
-    'CH2O': ["Less than a liter", "Between 1 and 2 liters", "More than 2 liters"].index(input_data['CH2O']),
-    'SCC': 1 if input_data['SCC'] == "Yes" else 0,
-    'FAF': ["None", "1-2 days a week", "3-4 days a week", "4-5 days a week"].index(input_data['FAF']),
-    'TUE': ["0-2 hours", "3-5 hours", "More than 5 hours"].index(input_data['TUE']),
-    'CALC': ["No", "Sometimes", "Frequently", "Always"].index(input_data['CALC'])
-}])
+# Encode and standardize the input data
+encoded_input = encode_input(input_data)
+input_df = pd.DataFrame([encoded_input])
 
 # Dropdown to select model for prediction
 model_option = st.selectbox(
