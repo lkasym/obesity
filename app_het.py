@@ -41,7 +41,7 @@ if st.button("Predict"):
     input_df = pd.DataFrame([input_data], columns=['Age', 'Height', 'Weight', 'family_history_with_overweight', 'FAVC', 'FCVC', 'NCP', 'CAEC', 'SMOKE', 'CH2O', 'SCC', 'FAF', 'TUE', 'CALC'])
     
     # Load the provided dataset
-    dataset = pd.read_csv("C:\\Users\\laksh\\Downloads\\preprocessed_obesity_dataset_updated.csv")
+    dataset = pd.read_csv("preprocessed_obesity_dataset_updated.csv")
     X = dataset.drop('NObeyesdad', axis=1)
     y = dataset['NObeyesdad']
     
