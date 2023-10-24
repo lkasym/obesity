@@ -2,6 +2,27 @@ import streamlit as st
 import pandas as pd
 from joblib import load
 
+# Page Configuration
+st.set_page_config(page_title="Obesity Prediction", layout="wide", page_icon=":chart_with_upwards_trend:")
+
+# Custom CSS for styling
+st.markdown("""
+<style>
+    .reportview-container {
+        background: #f4f4f4;
+    }
+    .big-font {
+        font-size:20px !important;
+    }
+    .small-font {
+        font-size:16px !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("# Obesity Prediction")
+st.markdown("### Please provide the following information to predict obesity level:")
+
 # Load pre-trained models
 model_files = {
     "KNN": "KNN.pkl",
@@ -28,6 +49,7 @@ obesity_mapping = {
     5: 'Obesity_Type_II',
     6: 'Obesity_Type_III'
 }
+
 
 # Health information based on research
 health_info = {
@@ -96,10 +118,13 @@ health_info = {
 st.title("Obesity Prediction")
 
 # Collect user input
-age = st.number_input("Age", min_value=10, max_value=100)
-height = st.number_input("Height (in meters)", min_value=1.0, max_value=2.5)
-weight = st.number_input("Weight (in kgs)", min_value=30, max_value=200)
-bmi = weight / (height ** 2)
+col1, col2 = st.beta_columns(2)
+with col1:
+    age = st.number_input("Age", min_value=10, max_value=100)
+    height = st.number_input("Height (in meters)", min_value=1.0, max_value=2.5)
+with col2:
+    weight = st.number_input("Weight (in kgs)", min_value=30, max_value=200)
+    bmi = weight / (height ** 2)
 
 # Encoding and collecting user input
 gender = st.selectbox("Gender", ["Male", "Female"])
