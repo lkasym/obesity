@@ -18,9 +18,6 @@ models = {}
 for model_name, model_file in model_files.items():
     with open(model_file, 'rb') as f:
         models[model_name] = load(f'{model_name}.pkl')
-        
-        
-
 
 # Streamlit interface
 st.title("Obesity Prediction")
@@ -31,9 +28,15 @@ height = st.number_input("Height (in meters)", min_value=1.0, max_value=2.5)
 weight = st.number_input("Weight (in kgs)", min_value=30, max_value=200)
 bmi = weight / (height ** 2)
 
+# Collect user input for Gender
+gender = st.selectbox("Gender", ["Male", "Female"])
+
+# Collect user input for MTRANS
+mtrans = st.selectbox("MTRANS", ["Public_Transportation", "Walking", "Automobile", "Motorbike", "Bike"])
+
 input_data = {
     'Age': age,
-    
+    'Gender': gender,
     'family_history_with_overweight': st.selectbox("Family history with overweight?", ["Yes", "No"]),
     'FAVC': st.selectbox("Frequent consumption of high caloric food?", ["Yes", "No"]),
     'FCVC': st.selectbox("Frequency of vegetable consumption", ["Never", "Sometimes", "Always"]),
@@ -45,7 +48,8 @@ input_data = {
     'FAF': st.selectbox("Frequency of physical activity", ["None", "1-2 days a week", "3-4 days a week", "4-5 days a week"]),
     'TUE': st.selectbox("Time using technology devices daily", ["0-2 hours", "3-5 hours", "More than 5 hours"]),
     'CALC': st.selectbox("Frequency of alcohol consumption", ["No", "Sometimes", "Frequently", "Always"]),
-    'BMI': bmi
+    'BMI': bmi,
+    'MTRANS': mtrans
 }
 
 input_df = pd.DataFrame([input_data])
