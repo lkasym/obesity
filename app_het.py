@@ -9,13 +9,25 @@ st.set_page_config(page_title="Obesity Prediction", layout="wide", page_icon=":c
 st.markdown("""
 <style>
     .reportview-container {
-        background: #f4f4f4;
+        background-color: #F0EDEE;
+        color: #4B4B4B;
     }
     .big-font {
-        font-size:20px !important;
+        font-size:24px !important;
+        color: #FF6B6B;
     }
     .small-font {
-        font-size:16px !important;
+        font-size:18px !important;
+        color: #4B4B4B;
+    }
+    h1 {
+        color: #FF6B6B;
+    }
+    .stButton>button {
+        color: #F0EDEE;
+        background-color: #FF6B6B;
+        border-radius: 5px;
+        border: none;
     }
 </style>
 """, unsafe_allow_html=True)
