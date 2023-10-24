@@ -46,43 +46,35 @@ st.title("Obesity Prediction")
 
 # Collect user input
 age = st.number_input("Age", min_value=10, max_value=100)
-gender = st.selectbox("Gender", ["Male", "Female"])
-family_history = st.selectbox("Family history with overweight?", ["Yes", "No"])
-favc = st.selectbox("Frequent consumption of high caloric food?", ["Yes", "No"])
-fcvc = st.selectbox("Frequency of vegetable consumption", ["Never", "Sometimes", "Always"])
-ncp = st.selectbox("Number of main meals a day", ["1 meal", "2 meals", "3 meals", "4 meals"])
-caec = st.selectbox("Consumption of food between meals", ["No", "Sometimes", "Frequently", "Always"])
-smoke = st.selectbox("Do you smoke?", ["Yes", "No"])
-ch2o = st.selectbox("Daily water consumption", ["Less than a liter", "Between 1 and 2 liters", "More than 2 liters"])
-scc = st.selectbox("Do you monitor calorie consumption?", ["Yes", "No"])
-faf = st.selectbox("Frequency of physical activity", ["None", "1-2 days a week", "3-4 days a week", "4-5 days a week"])
-tue = st.selectbox("Time using technology devices daily", ["0-2 hours", "3-5 hours", "More than 5 hours"])
-calc = st.selectbox("Frequency of alcohol consumption", ["No", "Sometimes", "Frequently", "Always"])
 height = st.number_input("Height (in meters)", min_value=1.0, max_value=2.5)
 weight = st.number_input("Weight (in kgs)", min_value=30, max_value=200)
 bmi = weight / (height ** 2)
 
-# Map user inputs to numerical values based on the input_mapping dictionary
+# Collect user input for Gender
+gender = st.selectbox("Gender", ["Male", "Female"])
+
+# Collect user input for MTRANS
+mtrans = st.selectbox("MTRANS", ["Public_Transportation", "Walking", "Automobile", "Motorbike", "Bike"])
+
 input_data = {
-    'Age': age,
     'Gender': gender,
-    'family_history_with_overweight': family_history,
-    'FAVC': favc,
-    'FCVC': fcvc,
-    'NCP': ncp,
-    'CAEC': caec,
-    'SMOKE': smoke,
-    'CH2O': ch2o,
-    'SCC': scc,
-    'FAF': faf,
-    'TUE': tue,
-    'CALC': calc,
-    'MTRANS': 'Public_Transportation',  # Default value, you can change this as needed
+    'Age': age,
+    'family_history_with_overweight': st.selectbox("Family history with overweight?", ["Yes", "No"]),
+    'FAVC': st.selectbox("Frequent consumption of high caloric food?", ["Yes", "No"]),
+    'FCVC': st.selectbox("Frequency of vegetable consumption", ["Never", "Sometimes", "Always"]),
+    'NCP': st.selectbox("Number of main meals a day", ["1 meal", "2 meals", "3 meals", "4 meals"]),
+    'CAEC': st.selectbox("Consumption of food between meals", ["No", "Sometimes", "Frequently", "Always"]),
+    'SMOKE': st.selectbox("Do you smoke?", ["Yes", "No"]),
+    'CH2O': st.selectbox("Daily water consumption", ["Less than a liter", "Between 1 and 2 liters", "More than 2 liters"]),
+    'SCC': st.selectbox("Do you monitor calorie consumption?", ["Yes", "No"]),
+    'FAF': st.selectbox("Frequency of physical activity", ["None", "1-2 days a week", "3-4 days a week", "4-5 days a week"]),
+    'TUE': st.selectbox("Time using technology devices daily", ["0-2 hours", "3-5 hours", "More than 5 hours"]),
+    'CALC': st.selectbox("Frequency of alcohol consumption", ["No", "Sometimes", "Frequently", "Always"]),
+    'MTRANS': mtrans,
     'BMI': bmi
 }
 
-# Create the input DataFrame with the correct order of features
-input_df = pd.DataFrame([input_data], columns=feature_names)
+input_df = pd.DataFrame([input_data])
 
 # Model selection
 selected_model = st.selectbox(
@@ -95,3 +87,4 @@ if st.button("Predict"):
     model = models[selected_model]
     prediction = model.predict(input_df)
     st.write(f"Predicted Class: {prediction[0]}")
+
