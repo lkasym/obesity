@@ -33,7 +33,7 @@ bmi = weight / (height ** 2)
 
 input_data = {
     'Age': age,
-    'BMI': bmi,
+    
     'family_history_with_overweight': st.selectbox("Family history with overweight?", ["Yes", "No"]),
     'FAVC': st.selectbox("Frequent consumption of high caloric food?", ["Yes", "No"]),
     'FCVC': st.selectbox("Frequency of vegetable consumption", ["Never", "Sometimes", "Always"]),
@@ -44,7 +44,8 @@ input_data = {
     'SCC': st.selectbox("Do you monitor calorie consumption?", ["Yes", "No"]),
     'FAF': st.selectbox("Frequency of physical activity", ["None", "1-2 days a week", "3-4 days a week", "4-5 days a week"]),
     'TUE': st.selectbox("Time using technology devices daily", ["0-2 hours", "3-5 hours", "More than 5 hours"]),
-    'CALC': st.selectbox("Frequency of alcohol consumption", ["No", "Sometimes", "Frequently", "Always"])
+    'CALC': st.selectbox("Frequency of alcohol consumption", ["No", "Sometimes", "Frequently", "Always"]),
+    'BMI': bmi
 }
 
 input_df = pd.DataFrame([input_data])
