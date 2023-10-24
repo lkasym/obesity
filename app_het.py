@@ -75,8 +75,9 @@ MTRANS_encoded = {
 
 # Construct the encoded and preprocessed input data
 input_data_encoded = {
-    'Age': age,
     'Gender': gender_encoded,
+    'Age': age,
+    
     'family_history_with_overweight': family_history_with_overweight_encoded,
     'FAVC': FAVC_encoded,
     'FCVC': FCVC_encoded,
